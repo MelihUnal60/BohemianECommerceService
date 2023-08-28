@@ -2,6 +2,7 @@
 
 using Dapper;
 using Npgsql;
+using NpgsqlTypes;
 using webapi.Entities;
 
 public class ProductService : IProductService
@@ -25,19 +26,20 @@ public class ProductService : IProductService
             connection.Open();
 
             // sql injection korumasý, her zaman parametre ile çalýþmak lazým
-            string commandText = $"insert into products (producttitle, productprice, productdescription, category," +
-                $" productphoto, stock, productrating, productratecount) values (@producttitle, @productprice, @productdescription, @category, @productphoto," +
-                $"@stock, @productrating, @productratecount)";
+            string commandText = $"insert into products (producttitle, productprice, productdescription, category, productphoto, stock, productrating, productratecount) values (@producttitle, @productprice, @productdescription, @category, @productphoto, @stock, @productrating, @productratecount)";
+
             await using (var cmd = new NpgsqlCommand(commandText, connection))
             {
+                
+
                 cmd.Parameters.AddWithValue("producttitle", product.ProductTitle);
                 cmd.Parameters.AddWithValue("productprice", product.ProductPrice);
-                cmd.Parameters.AddWithValue("pproductdescription", product.ProductDescription);
+                cmd.Parameters.AddWithValue("productdescription", product.ProductDescription);
                 cmd.Parameters.AddWithValue("category", product.Category);
                 cmd.Parameters.AddWithValue("productphoto", product.ProductPhoto);
                 cmd.Parameters.AddWithValue("stock", product.Stock);
                 cmd.Parameters.AddWithValue("productrating", product.ProductRating);
-                cmd.Parameters.AddWithValue("prouctratecount", product.ProductRateCount);
+                cmd.Parameters.AddWithValue("productratecount", product.ProductRateCount);
 
                 await cmd.ExecuteNonQueryAsync();
             }
