@@ -9,19 +9,19 @@ using webapi.Entities;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
-    
+
 
     public ProductController(IProductService productService)
     {
         _productService = productService;
-        
+
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
     {
         var result = await _productService.GetAllProducts();
-       
+
         return Ok(result);
     }
 
@@ -34,6 +34,17 @@ public class ProductController : ControllerBase
         else
             return NotFound();
     }
+
+    [HttpGet("{category}")]
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory(string category)
+    {
+        var result = await _productService.GetProductsByCategory(category);
+        if (result != null)
+            return Ok(result);
+        else
+            return NotFound();
+    }
+
 
     [HttpGet("{title}")]
     public async Task<ActionResult<Product>> GetByTitle(string title)

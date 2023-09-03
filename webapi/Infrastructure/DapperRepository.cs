@@ -31,4 +31,8 @@ public class DapperRepository<T> : IRepository<T> where T : BaseEntity
     {
         throw new NotImplementedException();
     }
+    public T GetByCategory(string category)
+    {
+        throw new NotImplementedException();
+    }
 }

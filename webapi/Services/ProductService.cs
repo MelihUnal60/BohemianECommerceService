@@ -103,7 +103,21 @@ public class ProductService : IProductService
         }
     }
 
-  
+    public async Task<IEnumerable<Product>> GetProductsByCategory(string category)
+    {
+        try
+        {
+            connection.Open();
+
+            string commandText = $"SELECT * FROM products WHERE category = @category";
+            var products = await connection.QueryAsync<Product>(commandText, new { category = category });
+            return products;
+        }
+        finally
+        {
+            connection.Close();
+        }
+    }
 
     public async Task Remove(int id)
     {
